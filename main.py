@@ -242,7 +242,8 @@ async def find_base_language_subtitles_from_missing_sutitles(base_url, api_key, 
                 # I don't think this should happen but better safe than sorry
 
             # If the subtitle is in the base language list, associate it with the language to translate in
-            if sub.code2 in base_languages:
+            # Skip embedded tracks (path=None) as Bazarr cannot translate them directly
+            if sub.code2 in base_languages and sub.path is not None:
                 subtitles_to_translate.append(SubtitleTranslate(sub, language, video_id, isinstance(video, Serie)))
                 found = True
                 break
